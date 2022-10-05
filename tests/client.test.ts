@@ -48,7 +48,7 @@ describe('client authenticate', () => {
   })
 })
 
-describe('client unbind', () => {
+describe('client close', () => {
   it('should unbind', async () => {
     const ldap = new LDAPClient({ url: 'ldap://localhost' })
     const client = new Client(ldap)
