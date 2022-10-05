@@ -1,0 +1,103 @@
+{
+  "env": {
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "unused-imports",
+    "prettier",
+    "eslint-plugin-import"
+  ],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "overrides": [
+    {
+      "files": ["*.js", "*.ts"]
+    }
+  ],
+  "root": true,
+  "ignorePatterns": ["node_modules", "dist", "coverage"],
+  "rules": {
+    "@typescript-eslint/array-type": "error",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "no-type-imports"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "error",
+    "@typescript-eslint/method-signature-style": ["error", "property"],
+    "@typescript-eslint/no-invalid-this": "error",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "arrow-parens": ["error", "always"],
+    "comma-dangle": ["error", "never"],
+    "eqeqeq": ["error", "always"],
+    "func-style": ["error", "expression"],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "index",
+          "sibling",
+          "parent",
+          "external",
+          "builtin",
+          "object",
+          "type",
+          "internal"
+        ]
+      }
+    ],
+    "jsx-quotes": ["error", "prefer-single"],
+    "no-console": "warn",
+    "no-fallthrough": "off",
+    "no-use-before-define": "off",
+    "object-curly-spacing": ["error", "always"],
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "next": [
+          "return",
+          "throw",
+          "case",
+          "default",
+          "while",
+          "for",
+          "class",
+          "break",
+          "continue",
+          "do",
+          "function",
+          "try"
+        ],
+        "prev": "*"
+      },
+      {
+        "blankLine": "always",
+        "next": "*",
+        "prev": "if"
+      }
+    ],
+    "prefer-destructuring": "error",
+    "prettier/prettier": "error",
+    "quotes": "off",
+    "space-in-parens": ["error", "never"],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "unused-imports/no-unused-imports": "warn"
+  }
+}

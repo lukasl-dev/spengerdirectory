@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2022",
+    "sourceMap": true,
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "declaration": true,
+    "strict": true
+  },
+  "include": [
+    "lib/**/*"
+, "tests/client.test.ts"  ],
+  "exclude": ["node_modules"]
+}
