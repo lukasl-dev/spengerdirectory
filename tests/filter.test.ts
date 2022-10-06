@@ -147,4 +147,10 @@ describe('build filter', () => {
 
     expect(filter).toBe('(!(!(cn=test))(sn=test))')
   })
+
+  it('should return empty string', () => {
+    const filter = buildFilter({} as any)
+
+    expect(filter).toBe('')
+  })
 })
