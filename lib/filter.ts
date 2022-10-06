@@ -5,7 +5,7 @@ export type Filter<F extends object> =
   | { compare: [keyof F, '=' | '<' | '<=' | '>' | '=>', string] }
 
 /**
- * Builds an LDAp filter string from the given filter object.
+ * Builds an LDAP filter string from the given filter object.
  *
  * @param query the filter object
  * @returns the LDAP filter string
