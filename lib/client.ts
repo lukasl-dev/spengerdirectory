@@ -1,3 +1,5 @@
+import { buildFilter, Filter } from './filter'
+import { SearchResult } from './search-result'
 import {
   Client as LDAPClient,
   ClientOptions as LDAPClientOptions
@@ -19,6 +21,11 @@ export const DEFAULT_CLIENT_OPTIONS: ClientOptions = {
  * The default domain name for authentication.
  */
 export const DEFAULT_DOMAIN = 'htl-wien5.schule'
+
+/**
+ * The default base DN for the search.
+ */
+export const DEFAULT_BASE_DN = 'dc=htl-wien5,dc=schule'
 
 export type ClientOptions = LDAPClientOptions
 
@@ -54,5 +61,39 @@ export class Client {
    */
   public close = async (): Promise<void> => {
     await this.ldap.unbind()
+  }
+
+  /**
+   * Performs a search operation against the LDAP server using the given filter
+   * string.
+   *
+   * @param filter the filter string
+   * @param baseDN the base DN to use, defaults to {@link DEFAULT_BASE_DN}
+   * @returns the {@link SearchResult}
+   */
+  public query = async <E extends object>(
+    filter: string,
+    baseDN: string = DEFAULT_BASE_DN
+  ): Promise<SearchResult<E>> => {
+    const result = await this.ldap.search(baseDN, { filter })
+
+    return {
+      references: result.searchReferences,
+      entries: result.searchEntries as E[]
+    }
+  }
+
+  /**
+   * Performs a search operation against the LDAP server using the given filter.
+   *
+   * @param filter the filter to apply to the search query
+   * @param baseDN the base DN to use, defaults to {@link DEFAULT_BASE_DN}
+   * @returns the matching search entries
+   */
+  public search = async <E extends object>(
+    filter: Filter<E>,
+    baseDN: string = DEFAULT_BASE_DN
+  ): Promise<SearchResult<E>> => {
+    return this.query<E>(buildFilter(filter), baseDN)
   }
 }
