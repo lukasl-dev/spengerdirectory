@@ -1,4 +1,4 @@
-import { Client, DEFAULT_CLIENT_OPTIONS, DEFAULT_DOMAIN } from '../lib'
+import { Client, DEFAULT_CLIENT_OPTIONS, DEFAULT_DOMAIN } from '../lib/client'
 import { describe, expect, it, vi } from 'vitest'
 import { Client as LDAPClient } from 'ldapts'
 
