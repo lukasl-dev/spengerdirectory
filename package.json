@@ -2,11 +2,18 @@
   "name": "spengerdirectory",
   "version": "1.0.3",
   "description": "",
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "main": "distindex.js",
+  "types": "dist/index.d.ts",
   "files": [
     "/dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
     "test": "vitest run --coverage",
     "test:watch": "vitest --coverage",
