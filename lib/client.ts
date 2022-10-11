@@ -1,5 +1,6 @@
 import { buildFilter, Filter } from './filter'
 import { SearchResult } from './search-result'
+import { User } from './objects'
 import {
   Client as LDAPClient,
   ClientOptions as LDAPClientOptions
@@ -95,5 +96,32 @@ export class Client {
     baseDN: string = DEFAULT_BASE_DN
   ): Promise<SearchResult<E>> => {
     return this.query<E>(buildFilter(filter), baseDN)
+  }
+
+  /**
+   * Performs a search operation against the LDAP server to search for the form
+   * teacher of the given abbreviated school class name.
+   *
+   * @param schoolClass the abbreviation of the school class
+   * @returns a {@link SearchResult} containing the matching entries
+   */
+  public searchFormTeacher = async (
+    schoolClass: string
+  ): Promise<SearchResult<User>> => {
+    const group = `CN=KV_${schoolClass},OU=KV,OU=Mailaktivierte Sicherheitsgruppen,OU=Gruppen,OU=SPG,DC=htl-wien5,DC=schule`
+
+    return this.search({
+      and: [
+        {
+          compare: ['objectClass', '=', 'person']
+        },
+        {
+          compare: ['objectClass', '=', 'user']
+        },
+        {
+          compare: ['memberOf', '=', group]
+        }
+      ]
+    })
   }
 }
