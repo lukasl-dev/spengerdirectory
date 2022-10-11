@@ -9,7 +9,7 @@ import {
  * The default LDAP client options.
  */
 export const DEFAULT_CLIENT_OPTIONS: ClientOptions = {
-  url: 'ldaps://htl-wien5.schule',
+  url: 'ldaps://ldap.spengergasse.at',
   tlsOptions: {
     requestCert: true,
     rejectUnauthorized: false
