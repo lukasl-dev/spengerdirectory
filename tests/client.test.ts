@@ -159,7 +159,7 @@ describe('client search form teacher', () => {
   })
 })
 
-describe('client search class members', () => {
+describe('client search class students', () => {
   it('should perform an correct LDAP search', async () => {
     const client = new Client()
 
@@ -170,7 +170,7 @@ describe('client search class members', () => {
     const group = `CN=${schoolClass},OU=Klassen,OU=Mailaktivierte Sicherheitsgruppen,OU=Gruppen,OU=SPG,DC=htl-wien5,DC=schule`
 
     const filter = `(&(objectClass=person)(objectClass=user)(memberOf=${group}))`
-    const result = await client.searchClassMembers(schoolClass)
+    const result = await client.searchClassStudents(schoolClass)
 
     expect(spy.getMockName()).toBe('search')
     expect(spy).toBeCalledWith(DEFAULT_BASE_DN, { filter })

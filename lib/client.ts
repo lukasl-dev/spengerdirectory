@@ -132,7 +132,7 @@ export class Client {
    * @param schoolClass the abbreviation of the school class
    * @returns a {@link SearchResult} containing the matching entries
    */
-  public searchClassMembers = async (
+  public searchClassStudents = async (
     schoolClass: string
   ): Promise<SearchResult<User>> => {
     const group = `CN=${schoolClass},OU=Klassen,OU=Mailaktivierte Sicherheitsgruppen,OU=Gruppen,OU=SPG,DC=htl-wien5,DC=schule`
