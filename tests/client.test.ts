@@ -4,6 +4,7 @@ import {
   DEFAULT_CLIENT_OPTIONS,
   DEFAULT_DOMAIN
 } from '../lib/client'
+import { buildFilter, Filter } from '../lib/filter'
 import { describe, expect, it, vi } from 'vitest'
 import { Client as LDAPClient } from 'ldapts'
 
@@ -93,6 +94,45 @@ describe('client query', () => {
 
     expect(spy.getMockName()).toBe('search')
     expect(spy).toBeCalledWith(baseDN, { filter })
+    expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
+
+    expect(result).toEqual({ entries: [], references: [] })
+  })
+})
+
+describe('client search', () => {
+  it('should perform an LDAP search with default base DN', async () => {
+    const client = new Client()
+
+    const spy = vi.spyOn(client.ldap, 'search')
+    spy.mockResolvedValueOnce({ searchEntries: [], searchReferences: [] })
+
+    const filter: Filter<{ mail: string }> = {
+      compare: ['mail', '=', 'foo@example.com']
+    }
+    const result = await client.search(filter)
+
+    expect(spy.getMockName()).toBe('search')
+    expect(spy).toBeCalledWith(DEFAULT_BASE_DN, { filter: buildFilter(filter) })
+    expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
+
+    expect(result).toEqual({ entries: [], references: [] })
+  })
+
+  it('should perform an LDAP search with custom base DN', async () => {
+    const client = new Client()
+
+    const spy = vi.spyOn(client.ldap, 'search')
+    spy.mockResolvedValueOnce({ searchEntries: [], searchReferences: [] })
+
+    const filter: Filter<{ mail: string }> = {
+      compare: ['mail', '=', 'foo@example.com']
+    }
+    const baseDN = 'dc=example,dc=com'
+    const result = await client.search(filter, baseDN)
+
+    expect(spy.getMockName()).toBe('search')
+    expect(spy).toBeCalledWith(baseDN, { filter: buildFilter(filter) })
     expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
 
     expect(result).toEqual({ entries: [], references: [] })
