@@ -156,8 +156,8 @@ export class Client {
    * Performs a search operation against the LDAP server to search for the
    * teachers of the given abbreviated school class name.
    *
-   * @param schoolClass the abbreviation of the school class @returns a {@link
-   * SearchResult} containing the matching entries
+   * @param schoolClass the abbreviation of the school class
+   * @returns a {@link SearchResult} containing the matching entries
    */
   public searchClassTeachers = async (
     schoolClass: string
