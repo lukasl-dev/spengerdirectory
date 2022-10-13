@@ -1,4 +1,9 @@
-import { Client, DEFAULT_CLIENT_OPTIONS, DEFAULT_DOMAIN } from '../lib/client'
+import {
+  Client,
+  DEFAULT_BASE_DN,
+  DEFAULT_CLIENT_OPTIONS,
+  DEFAULT_DOMAIN
+} from '../lib/client'
 import { describe, expect, it, vi } from 'vitest'
 import { Client as LDAPClient } from 'ldapts'
 
@@ -56,5 +61,40 @@ describe('client close', () => {
     await client.close()
 
     expect(ldap.unbind).toHaveBeenCalledOnce()
+  })
+})
+
+describe('client query', () => {
+  it('should perform an LDAP search with default base DN', async () => {
+    const client = new Client()
+
+    const spy = vi.spyOn(client.ldap, 'search')
+    spy.mockResolvedValueOnce({ searchEntries: [], searchReferences: [] })
+
+    const filter = '(objectClass=*)'
+    const result = await client.query(filter)
+
+    expect(spy.getMockName()).toBe('search')
+    expect(spy).toBeCalledWith(DEFAULT_BASE_DN, { filter })
+    expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
+
+    expect(result).toEqual({ entries: [], references: [] })
+  })
+
+  it('should perform an LDAP search with custom base DN', async () => {
+    const client = new Client()
+
+    const spy = vi.spyOn(client.ldap, 'search')
+    spy.mockResolvedValueOnce({ searchEntries: [], searchReferences: [] })
+
+    const filter = '(objectClass=*)'
+    const baseDN = 'dc=example,dc=com'
+    const result = await client.query(filter, baseDN)
+
+    expect(spy.getMockName()).toBe('search')
+    expect(spy).toBeCalledWith(baseDN, { filter })
+    expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
+
+    expect(result).toEqual({ entries: [], references: [] })
   })
 })
