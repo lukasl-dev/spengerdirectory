@@ -158,3 +158,23 @@ describe('client search form teacher', () => {
     expect(result).toEqual({ entries: [], references: [] })
   })
 })
+
+describe('client search class members', () => {
+  it('should perform an correct LDAP search', async () => {
+    const client = new Client()
+
+    const spy = vi.spyOn(client.ldap, 'search')
+    spy.mockResolvedValueOnce({ searchEntries: [], searchReferences: [] })
+
+    const schoolClass = '1AHIF'
+    const group = `CN=${schoolClass},OU=Klassen,OU=Mailaktivierte Sicherheitsgruppen,OU=Gruppen,OU=SPG,DC=htl-wien5,DC=schule`
+
+    const filter = `(&(objectClass=person)(objectClass=user)(memberOf=${group}))`
+    const result = await client.searchClassMembers(schoolClass)
+
+    expect(spy.getMockName()).toBe('search')
+    expect(spy).toBeCalledWith(DEFAULT_BASE_DN, { filter })
+
+    expect(result).toEqual({ entries: [], references: [] })
+  })
+})

@@ -124,4 +124,31 @@ export class Client {
       ]
     })
   }
+
+  /**
+   * Performs a search operation against the LDAP server to search for the
+   * students of the given abbreviated school class name.
+   *
+   * @param schoolClass the abbreviation of the school class
+   * @returns a {@link SearchResult} containing the matching entries
+   */
+  public searchClassMembers = async (
+    schoolClass: string
+  ): Promise<SearchResult<User>> => {
+    const group = `CN=${schoolClass},OU=Klassen,OU=Mailaktivierte Sicherheitsgruppen,OU=Gruppen,OU=SPG,DC=htl-wien5,DC=schule`
+
+    return this.search({
+      and: [
+        {
+          compare: ['objectClass', '=', 'person']
+        },
+        {
+          compare: ['objectClass', '=', 'user']
+        },
+        {
+          compare: ['memberOf', '=', group]
+        }
+      ]
+    })
+  }
 }
