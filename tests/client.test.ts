@@ -5,6 +5,7 @@ import {
   DEFAULT_DOMAIN
 } from '../lib/client'
 import { buildFilter, Filter } from '../lib/filter'
+import { Search } from '../lib/search'
 import { describe, expect, it, vi } from 'vitest'
 import { Client as LDAPClient } from 'ldapts'
 
@@ -133,6 +134,53 @@ describe('client filter', () => {
 
     expect(spy.getMockName()).toBe('search')
     expect(spy).toBeCalledWith(baseDN, { filter: buildFilter(filter) })
+    expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
+
+    expect(result).toEqual({ entries: [], references: [] })
+  })
+})
+
+describe('client search', () => {
+  it('should perform an LDAP search with default base DN', async () => {
+    const client = new Client()
+
+    const spy = vi.spyOn(client.ldap, 'search')
+    spy.mockResolvedValueOnce({ searchEntries: [], searchReferences: [] })
+
+    const search: Search<{ mail: string }> = {
+      filter: {
+        compare: ['mail', '=', 'foo@example.com']
+      }
+    }
+    const result = await client.search(search)
+
+    expect(spy.getMockName()).toBe('search')
+    expect(spy).toBeCalledWith(DEFAULT_BASE_DN, {
+      filter: buildFilter(search.filter)
+    })
+    expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
+
+    expect(result).toEqual({ entries: [], references: [] })
+  })
+
+  it('should perform an LDAP search with custom base DN', async () => {
+    const client = new Client()
+
+    const spy = vi.spyOn(client.ldap, 'search')
+    spy.mockResolvedValueOnce({ searchEntries: [], searchReferences: [] })
+
+    const search: Search<{ mail: string }> = {
+      baseDN: 'dc=example,dc=com',
+      filter: {
+        compare: ['mail', '=', '']
+      }
+    }
+    const result = await client.search(search)
+
+    expect(spy.getMockName()).toBe('search')
+    expect(spy).toBeCalledWith(search.baseDN, {
+      filter: buildFilter(search.filter)
+    })
     expect(spy).toHaveReturnedWith({ searchEntries: [], searchReferences: [] })
 
     expect(result).toEqual({ entries: [], references: [] })
