@@ -8,7 +8,7 @@ import { Filter } from '../filter'
  * @param schoolClass the abbreviation of the school class
  * @returns the created {@link Filter}
  */
-export const formTeacher = (schoolClass: string): Filter<User> => {
+export const formTeacherOfClass = (schoolClass: string): Filter<User> => {
   const group = `CN=KV_${schoolClass},OU=KV,OU=Mailaktivierte Sicherheitsgruppen,OU=Gruppen,OU=SPG,DC=htl-wien5,DC=schule`
 
   return {
