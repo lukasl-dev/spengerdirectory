@@ -7,7 +7,6 @@
     "strict": true,
     "lib": ["ES2019"],
     "sourceMap": true,
-    "baseUrl": "./lib",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "declarationMap": true
