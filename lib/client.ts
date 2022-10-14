@@ -1,5 +1,6 @@
 import { buildFilter, Filter } from './filter'
 import { SearchResult } from './search-result'
+import { Search } from './search'
 import {
   Client as LDAPClient,
   ClientOptions as LDAPClientOptions
@@ -90,10 +91,24 @@ export class Client {
    * @param baseDN the base DN to use, defaults to {@link DEFAULT_BASE_DN}
    * @returns the matching search entries
    */
-  public search = async <E extends object>(
+  public filter = async <E extends object>(
     filter: Filter<E>,
     baseDN: string = DEFAULT_BASE_DN
   ): Promise<SearchResult<E>> => {
     return this.query<E>(buildFilter(filter), baseDN)
+  }
+
+  /**
+   * Performs a search operation against the LDAP server using the given one.
+   *
+   * @param search the search to perform
+   * @returns the matching search entries
+   */
+  public search = async <E extends object>(
+    search: Search<E>
+  ): Promise<SearchResult<E>> => {
+    const { filter, baseDN = DEFAULT_BASE_DN } = search
+
+    return this.filter(filter, baseDN)
   }
 }

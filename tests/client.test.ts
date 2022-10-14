@@ -100,7 +100,7 @@ describe('client query', () => {
   })
 })
 
-describe('client search', () => {
+describe('client filter', () => {
   it('should perform an LDAP search with default base DN', async () => {
     const client = new Client()
 
@@ -110,7 +110,7 @@ describe('client search', () => {
     const filter: Filter<{ mail: string }> = {
       compare: ['mail', '=', 'foo@example.com']
     }
-    const result = await client.search(filter)
+    const result = await client.filter(filter)
 
     expect(spy.getMockName()).toBe('search')
     expect(spy).toBeCalledWith(DEFAULT_BASE_DN, { filter: buildFilter(filter) })
@@ -129,7 +129,7 @@ describe('client search', () => {
       compare: ['mail', '=', 'foo@example.com']
     }
     const baseDN = 'dc=example,dc=com'
-    const result = await client.search(filter, baseDN)
+    const result = await client.filter(filter, baseDN)
 
     expect(spy.getMockName()).toBe('search')
     expect(spy).toBeCalledWith(baseDN, { filter: buildFilter(filter) })

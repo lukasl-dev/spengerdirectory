@@ -1,5 +1,5 @@
 import { User } from '../objects'
-import { Filter } from '../filter'
+import { Search } from '../search'
 
 /**
  * Creates an LDAP filter that matches all users that are teachers of the given
@@ -8,20 +8,22 @@ import { Filter } from '../filter'
  * @param schoolClass the abbreviation of the school class
  * @returns the created {@link Filter}
  */
-export const teachersOfClass = (schoolClass: string): Filter<User> => {
+export const teachersOfClass = (schoolClass: string): Search<User> => {
   const group = `CN=lehrende_${schoolClass},OU=Klassenlehrer,OU=Mailaktivierte Sicherheitsgruppen,OU=Gruppen,OU=SPG,DC=htl-wien5,DC=schule`
 
   return {
-    and: [
-      {
-        compare: ['objectClass', '=', 'person']
-      },
-      {
-        compare: ['objectClass', '=', 'user']
-      },
-      {
-        compare: ['memberOf', '=', group]
-      }
-    ]
+    filter: {
+      and: [
+        {
+          compare: ['objectClass', '=', 'person']
+        },
+        {
+          compare: ['objectClass', '=', 'user']
+        },
+        {
+          compare: ['memberOf', '=', group]
+        }
+      ]
+    }
   }
 }

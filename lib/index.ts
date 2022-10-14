@@ -1,4 +1,4 @@
-export * from './filters'
+export * from './searches'
 export * from './objects'
 export * from './filter'
 export * from './client'
